@@ -1,0 +1,4 @@
+interface:
+  display_name: "Orchestrate Task Force"
+  short_description: "Coordinate visible tasks with adaptive concurrency"
+  default_prompt: "Use $orchestrate-task-force to coordinate this request. Create or reuse separate sidebar-visible owner chats for independent work packages and group them with this coordinator in one named sidebar section. Adapt concurrency to current capacity and conflicts, then verify the integrated result within the authorized scope."
