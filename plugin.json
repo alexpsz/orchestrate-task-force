@@ -1,0 +1,11 @@
+{
+  "name": "orchestrate-task-force",
+  "displayName": "Orchestrate Task Force",
+  "version": "1.0.0",
+  "description": "Coordinate independent work packages with visible subagents, adaptive concurrency, workspace isolation, and integrated acceptance in Antigravity, Claude Code, and Codex.",
+  "suggestedPrompts": [
+    "Use $orchestrate-task-force to coordinate this request with isolated subagent workspaces.",
+    "Continue with existing subagents, apply revised requirements, and verify integrated acceptance.",
+    "Run a read-only orchestration audit on current progress and pending dependencies."
+  ]
+}
