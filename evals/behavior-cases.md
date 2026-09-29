@@ -24,7 +24,7 @@ Use these during maintenance to review decisions, ownership, tool choices, and c
 | 18 | The user explicitly requests the GPT-6 Astra preset for new workers. | Load the optional preset, preserve root settings, and select only supported authorized configurations; ordinary failures do not force escalation. |
 | 19 | On a Claude host that permits subagents only on request, the skill loads but the user never asked for delegation. | Keep the work in the current session; loading the skill requests no helpers or sessions. |
 | 20 | On the same host, the user explicitly asks to split independent work across agents. | Treat it as the request the host requires; ask first when it is unclear whether delegation was asked for. |
-| 21 | A read-only audit on a Claude host uses subagents. | Use read-only agent types and state the no-write scope in each prompt; no worktrees, groups, or new sessions. |
+| 21 | A read-only audit on a Claude host uses subagents. | Use read-only, non-fork agent types and state the no-write scope in each prompt; no worktrees, groups, or new sessions. |
 | 22 | Parallel code changes in a git repository are requested without new visible sessions. | Keep the coordinator accountable; concurrent writer helpers use worktree isolation; inspect their branches before integration. |
 | 23 | Visible owners are requested and only chip creation is exposed. | Report chips as proposed; after launch, verify each session's `parentSessionId`, worktree, branch, and baseline through unfiltered listings; no hidden substitution. |
 | 24 | A helper or owner is still running while other packages are ready. | Advance independent work; no polling, sleep, or predicted results. |
@@ -35,7 +35,7 @@ Use these during maintenance to review decisions, ownership, tool choices, and c
 | 29 | A worker needs an action this session was denied. | Route it to the user; never ask a peer or helper to perform it. |
 | 30 | The user requests another model for an owned worker session. | Change that session at a turn boundary; never the coordinator's own model, and no settings files to route a package. |
 | 31 | The user selects the Astra preset on a Claude host. | Report it unavailable and ask for defaults or a named Claude model; no silent mapping. |
-| 32 | Work was sent to a cloud session or remote agent. | Read its transcript or completion notice; do not wait for a reply it cannot send. |
+| 32 | Work was sent to a target that may be unable to reply, such as a cloud session, a cross-machine session without a reply address, or a remote agent. | Check the host's stated capability and the reply address; if no reply can come, read its transcript or completion notice instead of waiting. |
 | 33 | A visible owner session goes idle. | Subscribe by its verified `ListAgents` name, not its session id; on the notice, read its transcript to tell completion from a blocker or a request for input. |
 | 34 | Context summarization is near during orchestration. | Keep the core recovery note, plus session, group, helper, and worktree ids, in the coordinator conversation; not in persistent memory unless requested. |
 | 35 | Cleanup cannot remove an owner's worktree because its session still uses it. | Report the retained directory without forcing removal; archive the session only with the user's authority. |

@@ -6,7 +6,7 @@ This adapter maps the core to Claude Code hosts: the CLI, the Code tab of the Cl
 
 Host instructions outrank this skill. Where a host permits subagents only when the user asks, follow the host's definition of a request. Loading this skill is not one. A user explicitly asking to delegate, parallelize, or split work across agents normally is. When it is unclear, ask. Permission is per session: never ask a helper or peer session to perform an action this session was denied or expects to be blocked, and route it to the user instead.
 
-A subagent starts without this conversation and with its agent type's own tool allowlist. Give it the package contract and only the context it needs. For an audit, choose a read-only agent type and state the no-write scope in its prompt. Every spawn rebuilds context, so explain the cost before unusually large fan-out.
+A regular subagent starts without this conversation and with its agent type's own tool allowlist. Where the host offers the `fork` type, a fork instead inherits the conversation, tools, and model and reuses the prompt cache, so it is not a read-only helper. Give a regular subagent the package contract and only the context it needs. For an audit, choose a read-only, non-fork agent type and state the no-write scope in its prompt. Every regular spawn rebuilds context, so explain the cost before unusually large fan-out.
 
 ## Use internal helpers
 
@@ -40,7 +40,7 @@ Read back membership with `list_sessions` filtered by `group`, and the coordinat
 
 ## Follow through and recover
 
-Message owners only within an explicitly authorized coordination workflow. Address them with `SendMessage` by session id, as the host documents and the trial confirmed, or by `ListAgents` name. "Delivered" or "queued" confirms transport only; a session in a different permission mode may hold the message for approval. Owners report back to the coordinator's session id or to the `from` attribute of its message. Do not loop on `ListAgents` or send "are you done?" messages. Unattended sessions can neither send nor receive these messages. Cloud sessions receive but cannot reply, so read their transcripts instead.
+Message owners only within an explicitly authorized coordination workflow. Address them with `SendMessage` by session id, as the host documents and the trial confirmed, or by `ListAgents` name. "Delivered" or "queued" confirms transport only; a session in a different permission mode may hold the message for approval. Owners report back to the coordinator's session id or to the `from` attribute of its message. Do not loop on `ListAgents` or send "are you done?" messages. In the desktop host checked here, the older `send_message` tool cannot reach unattended sessions (scheduled-task runs and remote-dispatched sessions), and `ListAgents` states that cloud sessions cannot reply yet. Elsewhere, judge by the target's inbox, inbound controls, and whether the message carries a reply address; when no reply can come, read the target's transcript instead of waiting.
 
 For one idle notice, pass `notify_when_idle: true` addressed by the owner's `ListAgents` name, since a session-id address is rejected for subscriptions. Match the `ListAgents` row to the verified session id first and include its `[ref]` when one is shown, because a bare name that also names a helper reaches the helper. An idle notice means only that a turn ended. Read the owner's transcript with `list_events` to tell completion from a blocker or a request for input.
 
