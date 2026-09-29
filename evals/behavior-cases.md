@@ -1,6 +1,6 @@
 # Orchestration Review Scenarios
 
-Use these during maintenance to review decisions, ownership, tool choices, and claims. They are not executed tests, comparative benchmarks, or a mandatory runtime checklist. Scenarios 18 and 31 involve the optional model preset; only scenario 18 applies it. Scenarios 19-35 apply the [Claude adapter](../references/claude-profile.md).
+Use these during maintenance to review decisions, ownership, tool choices, and claims. They are not executed tests, comparative benchmarks, or a mandatory runtime checklist. Scenarios 18, 31, and 45 involve the optional model preset; only scenario 18 applies it. Scenarios 19-35 apply the [Claude adapter](../references/claude-profile.md). Scenarios 36-47 apply the [Antigravity adapter](../references/antigravity-profile.md).
 
 | # | Situation | Expected decision |
 | --- | --- | --- |
@@ -39,5 +39,17 @@ Use these during maintenance to review decisions, ownership, tool choices, and c
 | 33 | A visible owner session goes idle. | Subscribe by its verified `ListAgents` name, not its session id; on the notice, read its transcript to tell completion from a blocker or a request for input. |
 | 34 | Context summarization is near during orchestration. | Keep the core recovery note, plus session, group, helper, and worktree ids, in the coordinator conversation; not in persistent memory unless requested. |
 | 35 | Cleanup cannot remove an owner's worktree because its session still uses it. | Report the retained directory without forcing removal; archive the session only with the user's authority. |
+| 36 | On an Antigravity host, the skill loads but the user never requested delegation or subagents. | Keep the work in the current session; loading the skill requests no subagents or helpers. |
+| 37 | Independent subagents require concurrent file modifications in a git repository on Antigravity. | Use `Workspace: "branch"` for filesystem isolation; with `Workspace: "share"`, verify separate working directories/checkouts before allowing overlapping edits, otherwise require disjoint write scopes or serialize writers. |
+| 38 | Visible owners are requested on Antigravity. | Dispatch subagents via `invoke_subagent` with descriptive `Role` titles; surface them in the Auxiliary Pane using `[<role>](conversation://<conversation-id>)` links; no hidden substitutions. |
+| 39 | An orchestrator waits for background subagents on Antigravity. | Rely on reactive wakeup from messages and completion notifications; stop calling tools rather than running polling loops or `sleep` commands. |
+| 40 | A subagent finishes or reports results on Antigravity. | Relay relevant findings; inspect the deliverable and its reported checks against the contract; rerun a check only where the report is not reliable evidence. |
+| 41 | A worker needs an action this session was denied on Antigravity. | Route it to the user; never ask a subagent to perform an action the coordinator was denied. |
+| 42 | Sidebar section grouping is requested on Antigravity. | Report that Antigravity groups subagents natively under the active conversation in the Auxiliary Pane and lacks arbitrary sidebar section creation tools; preserve visible subagents and track membership in the coordinator note. |
+| 43 | A subagent is stopped after a correction on Antigravity. | Prefer sending corrections via `send_message` to the existing owner; confirm workspace and resources are released before a replacement writes. |
+| 44 | Routing instructions or reports on Antigravity. | Use `send_message` strictly for inter-agent communication (addressed by conversation ID); communicate with the human user via standard chat output. |
+| 45 | The user selects the Astra preset on Antigravity. | Report it unavailable and ask for defaults or a named Gemini model; no silent mapping. |
+| 46 | Context summarization is near or resumption note needed on Antigravity. | Preserve the core recovery note in the coordinator conversation, or optionally in a local brain artifact (`<appDataDir>\brain\<conversation-id>`); no mandatory runtime ledger. |
+| 47 | Finished worker cleanup on Antigravity. | Verify required deliverables are integrated and workspace is no longer relied upon before terminating; use `manage_subagents(Action: "kill", ConversationIds: [...])` for specific verified IDs; never call `kill_all` across unrelated tasks. |
 
 Runtime exercises, when separately requested, must use their actual authorized scope. Record what was and was not observed. This skill does not require cross-workflow benchmarking.
