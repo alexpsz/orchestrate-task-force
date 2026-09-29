@@ -1,6 +1,6 @@
 ---
 name: orchestrate-task-force
-description: "Coordinate independent work packages with user-requested visible tasks, adaptive concurrency, and integrated acceptance. Use for execution, monitoring, or read-only orchestration audits."
+description: "Coordinate independent work packages with user-requested visible tasks (Codex chats or Claude Code sessions), bounded helpers, adaptive concurrency, and integrated acceptance. Use for execution, monitoring, or read-only orchestration audits. Loading it does not authorize new tasks or helpers."
 ---
 
 # Orchestrate Task Force
@@ -52,6 +52,7 @@ Keep private project names, paths, real task IDs, credentials, and runtime recor
 ## Read only what applies
 
 - For Codex visible tasks or sidebar grouping, read [codex-profile.md](references/codex-profile.md).
-- Only when the user explicitly selects the Astra preset, read [astra-effort-preset.md](references/astra-effort-preset.md). Do not load it for ordinary orchestration.
+- On Claude Code hosts (CLI, desktop Code tab, or web), read [claude-profile.md](references/claude-profile.md) before dispatching helpers or sessions, grouping, messaging, or changing configuration.
+- Only when the user explicitly selects the Astra preset, read [astra-effort-preset.md](references/astra-effort-preset.md). Do not load it for ordinary orchestration. On Claude hosts, follow claude-profile.md instead; the preset's model is unavailable there.
 - For an unclear routing or recovery decision, read [decision-guide.md](references/decision-guide.md).
 - For skill maintenance, use [behavior-cases.md](evals/behavior-cases.md). These are review scenarios, not benchmark results.
